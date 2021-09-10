@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  flask-api:
+    <<: &flask-api
+      image: "ghcr.io/s-klimov/auth_sprint_1:dev"
+      build:
+        target: development_build
+        context: .
+        args:
+          FLASK_ENV: development
+        cache_from:
+          - "ghcr.io/s-klimov/auth_sprint_1:dev"
+          - "ghcr.io/s-klimov/auth_sprint_1:latest"
+          - "*"
+      depends_on:
+        - db
+        - redis
+      networks:
+        - webnet
+      env_file: ./config/.env
+    command: flask run -h 0.0.0.0
+
+  db:
+    image: "postgres:13.4-alpine"
+    restart: unless-stopped
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres:/docker-entrypoint-initdb.d/
+    networks:
+      - webnet
+    env_file: ./config/.env
+
+  redis:
+    image: redis:6.2.5-alpine
+    networks:
+      - webnet
+
+
+volumes:
+  pgdata:
+
+networks:
+  webnet:

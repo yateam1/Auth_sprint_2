@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  caddy:
+    image: "caddy:2.2.1"
+    restart: unless-stopped
+    env_file: ./config/.env
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy-config:/config
+      - caddy-data:/data
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - flask-api
+    networks:
+        - proxynet
+
+  flask-api:
+    <<: &flask-api
+      image: "ghcr.io/s-klimov/auth_sprint_1:latest"
+      build:
+        target: production_build
+        args:
+          FLASK_ENV: "production"
+      restart: unless-stopped
+    command: sh ./docker/flask-api/uwsgi.sh
+    networks:
+      - proxynet
+    expose:
+      - 5000
+
+volumes:
+  caddy-config:
+  caddy-data:
+
+networks:
+  proxynet:
