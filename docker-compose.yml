@@ -16,6 +16,7 @@ services:
       depends_on:
         - db
         - redis
+        - circuitbreaker
       networks:
         - webnet
       env_file: ./config/.env
@@ -35,6 +36,27 @@ services:
     image: redis:6.2.5-alpine
     networks:
       - webnet
+
+  circuitbreaker:
+    container_name: circuitbreaker
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development_build
+      context: .
+      args:
+        FLASK_ENV: development
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_API=auth_sprint_2_flask-api_1
+    ports:
+      - 8001:5000
+    volumes:
+      - ./proxy:/app
+    networks:
+      - webnet
+    command: flask run -h 0.0.0.0
 
 
 volumes:

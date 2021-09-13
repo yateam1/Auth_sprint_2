@@ -19,6 +19,8 @@ PyJWT = "^2.1.0"
 factory-boy = "^3.2.0"
 gevent = "^21.8.0"
 uWSGI = "^2.0.19"
+pybreaker = "^0.6.0"
+requests = "^2.26.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"
