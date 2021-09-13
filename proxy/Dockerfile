@@ -39,9 +39,7 @@ RUN chmod +x '/docker-entrypoint.sh' \
   && groupadd -r web && useradd -d /app -r -g web web \
   && chown web:web -R /app
 
-# COPY --chown=web:web ./poetry_circuitbreaker.lock ./pyproject.toml /app/
-COPY --chown=web:web ./pyproject_circuitbreaker.toml /app/pyproject.toml
-COPY --chown=web:web ./poetry_circuitbreaker.lock /app/poetry.lock
+COPY --chown=web:web ./proxy/poetry.lock ./proxy/pyproject.toml /app/
 
 RUN echo "$FLASK_ENV" \
   && poetry install \

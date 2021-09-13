@@ -42,7 +42,7 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: Dockerfile_circuitbreaker
+      dockerfile: ./proxy/Dockerfile
       target: development_build
       context: .
       args:
