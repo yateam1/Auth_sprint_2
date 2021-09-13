@@ -5,7 +5,8 @@ import requests
 from requests import get
 import os
 
-SITE_NAME = f"http://{os.environ['FLASK_API']}:5000/"
+PORT = 8000 if os.environ['FLASK_ENV'] == 'production' else 5000
+SITE_NAME = f"http://{os.environ['FLASK_API']}:{PORT}/"
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "Secret!"
@@ -16,8 +17,8 @@ TIMEOUT=6
 circuit = pybreaker.CircuitBreaker(fail_max=FAILURES, reset_timeout=TIMEOUT, name="proxy")
 
 @circuit
-@app.route('/', defaults={'path': ''}, methods=["GET", "POST"])
-@app.route('/<path:path>', methods=["GET", "POST"])
+@app.route('/', defaults={'path': ''}, methods=["GET", "POST", 'DELETE'])
+@app.route('/<path:path>', methods=["GET", "POST", 'DELETE'])
 def proxy(*args, **kwargs):
 
     if request.method=='POST':
@@ -49,7 +50,3 @@ def proxy(*args, **kwargs):
 
     response = Response(resp.content, resp.status_code, headers)
     return response
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5023, debug=True)

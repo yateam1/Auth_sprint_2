@@ -8,17 +8,8 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.9"
 Flask = "^2.0.1"
-psycopg2-binary = "^2.9.1"
-sqlalchemy = "1.4.22" # temp fix
-Flask-SQLAlchemy = "^2.5.1"
-flask-restx = "^0.5.0"
-python-decouple = "^3.4"
-Flask-Bcrypt = "^0.7.1"
-Flask-Migrate = "^3.1.0"
-PyJWT = "^2.1.0"
-factory-boy = "^3.2.0"
-gevent = "^21.8.0"
-uWSGI = "^2.0.19"
+pybreaker = "^0.6.0"
+requests = "^2.26.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"

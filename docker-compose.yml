@@ -42,7 +42,7 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_circuitbreaker
       target: development_build
       context: .
       args:
@@ -50,6 +50,7 @@ services:
     environment:
       - FLASK_APP=app.py
       - FLASK_API=auth_sprint_2_flask-api_1
+      - FLASK_ENV=development
     ports:
       - 8001:5000
     volumes:
